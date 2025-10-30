@@ -52,9 +52,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             className="cursor-pointer"
             onClick={() => onNavigate('home')}
           >
-            <div className="text-3xl font-bebas tracking-widest text-white">
+            {/* <div className="text-3xl font-bebas tracking-widest text-white">
               VALLEY <span className="text-red-600">FIGHT</span> SERIES
-            </div>
+            </div> */}
+            <img src="/logo.jpg" alt="Valley Fight Series Logo" width="150" height="150" />
+
           </div>
 
           {/* Desktop Navigation */}
