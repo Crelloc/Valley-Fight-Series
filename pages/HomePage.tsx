@@ -62,13 +62,13 @@ const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
               href={TICKETS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-block bg-red-600 text-white font-bebas text-3xl px-12 py-4 rounded-md tracking-wider hover:bg-red-700 transition-colors duration-300 transform hover:scale-105"
+              className="w-full sm:w-auto text-center inline-block bg-red-600 text-white font-bebas text-3xl px-12 py-4 rounded-md tracking-wider hover:bg-red-700 transition-colors duration-300 transform hover:scale-105"
             >
               Buy Tickets
             </a>
             <button
               onClick={onOpenPpvModal}
-              className="w-full sm:w-auto inline-block bg-transparent border-2 border-red-600 text-white font-bebas text-3xl px-12 py-3 rounded-md tracking-wider hover:bg-red-600 transition-colors duration-300 transform hover:scale-105"
+              className="w-full sm:w-auto text-center inline-block bg-transparent border-2 border-red-600 text-white font-bebas text-3xl px-12 py-3 rounded-md tracking-wider hover:bg-red-600 transition-colors duration-300 transform hover:scale-105"
             >
               Buy PPV
             </button>
@@ -102,13 +102,13 @@ const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
               href={TICKETS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-block bg-red-600 text-white font-bebas text-3xl px-12 py-4 rounded-md tracking-wider hover:bg-red-700 transition-colors duration-300 transform hover:scale-105"
+              className="w-full sm:w-auto text-center inline-block bg-red-600 text-white font-bebas text-3xl px-12 py-4 rounded-md tracking-wider hover:bg-red-700 transition-colors duration-300 transform hover:scale-105"
             >
               Buy Tickets
             </a>
             <button
               onClick={onOpenPpvModal}
-              className="w-full sm:w-auto inline-block bg-gray-800 text-white font-bebas text-3xl px-12 py-3 rounded-md tracking-wider hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105"
+              className="w-full sm:w-auto text-center inline-block bg-gray-800 text-white font-bebas text-3xl px-12 py-3 rounded-md tracking-wider hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105"
             >
               Buy PPV
             </button>
