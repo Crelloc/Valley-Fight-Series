@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             {/* <div className="text-3xl font-bebas tracking-widest text-white">
               VALLEY <span className="text-red-600">FIGHT</span> SERIES
             </div> */}
-            <img src="/logo.jpg" alt="Valley Fight Series Logo" width="100" height="100" />
+            <img src="/logo.jpg" alt="Valley Fight Series Logo" width="50" height="50" />
 
           </div>
 
