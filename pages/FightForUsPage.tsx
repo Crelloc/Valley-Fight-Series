@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
 const FormSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="space-y-6 pt-8 mt-8 border-t border-gray-700 first:mt-0 first:pt-0 first:border-none">
@@ -30,6 +30,60 @@ const Textarea: React.FC<React.TextareaHTMLAttributes<HTMLTextAreaElement>> = (p
 );
 
 const FightForUsPage: React.FC = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const FORMSPARK_ACTION_URL = "https://submit-form.com/CSRSg34jz";
+  
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    const formData = new FormData(event.currentTarget);
+    const data: { [key: string]: any } = {};
+
+    for (const [key, value] of formData.entries()) {
+      if (key.endsWith('[]')) {
+        const cleanKey = key.slice(0, -2);
+        if (!data[cleanKey]) {
+          data[cleanKey] = [];
+        }
+        data[cleanKey].push(value);
+      } else {
+        data[key] = value;
+      }
+    }
+
+    try {
+      const response = await fetch(FORMSPARK_ACTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        if (formRef.current) {
+          formRef.current.reset();
+        }
+      } else {
+        const errorData = await response.json().catch(() => ({ message: 'Form submission failed without a JSON response.' }));
+        console.error('Form submission failed:', response.status, errorData);
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      console.error(error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const weightClasses = [
     "ATOMWEIGHT (AT OR UNDER 105LBS)",
     "STRAWWEIGHT (105-115LBS)",
@@ -63,221 +117,228 @@ const FightForUsPage: React.FC = () => {
       </div>
 
       <div className="max-w-4xl mx-auto bg-gray-900/50 border border-gray-700 rounded-lg p-8">
-        <form
-          action="https://submit-form.com/YOUR_FORM_ID" // Replace with your Formspark ID
-          method="POST"
-          encType="multipart/form-data"
-        >
-          
-          <FormSection title="PERSONAL INFO">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <Label htmlFor="first-name" required>Fighter Name</Label>
-                <Input type="text" id="first-name" name="First Name" placeholder="First" required />
+        {submitStatus === 'success' ? (
+          <div className="text-center py-12">
+            <h3 className="text-3xl font-bebas text-green-500 tracking-wider">Submission Received!</h3>
+            <p className="text-gray-300 mt-4">Thank you for creating your fighter profile. Our matchmaking team will review your information and contact you if a suitable matchup is available.</p>
+            <button
+              onClick={() => setSubmitStatus(null)}
+              className="mt-8 inline-block bg-red-600 text-white font-bebas text-xl px-8 py-2 rounded-md tracking-wider hover:bg-red-700 transition-colors"
+            >
+              Submit Another Profile
+            </button>
+          </div>
+        ) : (
+          <form ref={formRef} onSubmit={handleSubmit}>
+            <FormSection title="PERSONAL INFO">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="first-name" required>Fighter Name</Label>
+                  <Input type="text" id="first-name" name="First Name" placeholder="First" required />
+                </div>
+                <div>
+                  <Label htmlFor="last-name" required>&nbsp;</Label>
+                  <Input type="text" id="last-name" name="Last Name" placeholder="Last" required />
+                </div>
               </div>
-              <div>
-                <Label htmlFor="last-name" required>&nbsp;</Label>
-                <Input type="text" id="last-name" name="Last Name" placeholder="Last" required />
-              </div>
-            </div>
-             <div>
-                <Label htmlFor="nickname">Ring Name /​ Nickname</Label>
-                <Input type="text" id="nickname" name="Nickname" />
-                <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                <div>
-                  <Label htmlFor="dob" required>Date of Birth</Label>
-                  <Input type="date" id="dob" name="Date of Birth" required />
+                  <Label htmlFor="nickname">Ring Name /​ Nickname</Label>
+                  <Input type="text" id="nickname" name="Nickname" />
+                  <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div>
+                    <Label htmlFor="dob" required>Date of Birth</Label>
+                    <Input type="date" id="dob" name="Date of Birth" required />
+                 </div>
+                 <div>
+                    <Label htmlFor="gender" required>Gender</Label>
+                    <Select id="gender" name="Gender" required>
+                      <option>Male</option>
+                      <option>Female</option>
+                    </Select>
+                 </div>
+              </div>
+               <div>
+                  <Label htmlFor="location" required>Where are you located?</Label>
+                  <Input type="text" id="location" name="Location" required />
+                  <HelpText isUppercase>CITY, STATE, AND ZIPCODE</HelpText>
+              </div>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div>
+                    <Label htmlFor="height" required>What is your height?</Label>
+                    <Input type="text" id="height" name="Height" required />
+                    <HelpText>EXAMPLE: 5'7" FOR 5 FOOT 7 INCHES TALL</HelpText>
+                 </div>
+                 <div>
+                    <Label htmlFor="current-weight" required>What do you currently weigh?</Label>
+                    <Input type="number" id="current-weight" name="Current Weight" required />
+                 </div>
+              </div>
+              <div>
+                <Label htmlFor="weight-class" required>What is your weight class?</Label>
+                <HelpText isItalic>PLEASE SELECT ALL OF THE WEIGHT CLASSES THAT APPLY TO YOU</HelpText>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-2">
+                    {weightClasses.map(option => (
+                        <label key={option} className="flex items-center space-x-3 text-gray-300">
+                            <input type="checkbox" name="weight-class[]" value={option} className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
+                            <span className="text-sm uppercase">{option}</span>
+                        </label>
+                    ))}
+                    <div className="flex items-center space-x-3">
+                        <input type="checkbox" id="weight-class-other-checkbox" name="weight-class[]" value="Other" className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
+                        <Input type="text" name="weight-class-other" placeholder="Other" className="flex-1"/>
+                    </div>
+                </div>
+              </div>
+            </FormSection>
+
+            <FormSection title="CONTACT INFO">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="email" required>Fighter Email Address</Label>
+                    <Input type="email" id="email" name="Email" required />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone" required>Fighter Phone Number</Label>
+                    <Input type="tel" id="phone" name="Phone" required />
+                  </div>
+               </div>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="instagram">What is your Instagram?</Label>
+                    <Input type="text" id="instagram" name="Instagram" />
+                     <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
+                  </div>
+                  <div>
+                    <Label htmlFor="facebook">What is your Facebook?</Label>
+                    <Input type="text" id="facebook" name="Facebook" />
+                    <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
+                  </div>
                </div>
                <div>
-                  <Label htmlFor="gender" required>Gender</Label>
-                  <Select id="gender" name="Gender" required>
-                    <option>Male</option>
-                    <option>Female</option>
+                  <Label htmlFor="contact-method" required>Preferred Contact Method</Label>
+                  <Select id="contact-method" name="Preferred Contact Method" required>
+                      <option>Email</option>
+                      <option>Phone Call</option>
+                      <option>Text Message</option>
+                      <option>Instagram</option>
+                      <option>Facebook</option>
+                      <option>Other</option>
                   </Select>
+                  <HelpText isItalic>HOW SHOULD WE CONTACT YOU</HelpText>
                </div>
-            </div>
-             <div>
-                <Label htmlFor="location" required>Where are you located?</Label>
-                <Input type="text" id="location" name="Location" required />
-                <HelpText isUppercase>CITY, STATE, AND ZIPCODE</HelpText>
-            </div>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div>
-                  <Label htmlFor="height" required>What is your height?</Label>
-                  <Input type="text" id="height" name="Height" required />
-                  <HelpText>EXAMPLE: 5'7" FOR 5 FOOT 7 INCHES TALL</HelpText>
-               </div>
-               <div>
-                  <Label htmlFor="current-weight" required>What do you currently weigh?</Label>
-                  <Input type="number" id="current-weight" name="Current Weight" required />
-               </div>
-            </div>
-            <div>
-              <Label htmlFor="weight-class" required>What is your weight class?</Label>
-              <HelpText isItalic>PLEASE SELECT ALL OF THE WEIGHT CLASSES THAT APPLY TO YOU</HelpText>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-2">
-                  {weightClasses.map(option => (
-                      <label key={option} className="flex items-center space-x-3 text-gray-300">
-                          <input type="checkbox" name="weight-class[]" value={option} className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
-                          <span className="text-sm uppercase">{option}</span>
-                      </label>
-                  ))}
-                  <div className="flex items-center space-x-3">
-                      <input type="checkbox" id="weight-class-other-checkbox" name="weight-class[]" value="Other" className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
-                      <Input type="text" name="weight-class-other" placeholder="Other" className="flex-1"/>
+            </FormSection>
+
+            <div className="pt-8 mt-8 border-t border-gray-700">
+              <h2 className="text-2xl font-bebas text-red-600 tracking-wider uppercase">Event & Match Type</h2>
+              <div className="space-y-6 mt-6">
+                   <div>
+                    <Label htmlFor="bout-type" required>Choose Bout Type</Label>
+                    <Select id="bout-type" name="Bout Type" required>
+                        <option>MMA</option>
+                        <option>Muay Thai</option>
+                        <option>Boxing</option>
+                        <option>Grappling</option>
+                        <option>Team Grappling</option>
+                        <option>All of the above</option>
+                    </Select>
+                  </div>
+                  <div className="pt-8 mt-8 border-t border-gray-700">
+                      <h3 className="text-xl font-bebas text-white tracking-wider uppercase">Background & Experience</h3>
+                      <div className="space-y-6 mt-6">
+                          <div>
+                              <Label htmlFor="gym" required>What gym/​team do you represent?</Label>
+                              <Input type="text" id="gym" name="Gym/Team" placeholder='IF NONE, LIST "INDEPENDENT"' required />
+                              <HelpText isUppercase>IF NONE, LIST "INDEPENDENT"</HelpText>
+                          </div>
+                          <div>
+                              <Label htmlFor="matchup-contact">Who should we contact regarding matchups?</Label>
+                              <Select id="matchup-contact" name="Matchup Contact">
+                                <option>Myself</option>
+                                <option>My Coach / Manager</option>
+                              </Select>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <div className="block text-sm font-bold text-gray-300 mb-2 uppercase">What is your stance? <span className="text-red-500">*</span></div>
+                              <div className="flex items-center space-x-6 mt-2">
+                                  {stances.map(stance => (
+                                      <label key={stance} className="flex items-center space-x-2 text-gray-300">
+                                          <input type="radio" name="Stance" value={stance} required className="h-4 w-4 bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500"/>
+                                          <span className="uppercase">{stance}</span>
+                                      </label>
+                                  ))}
+                              </div>
+                            </div>
+                            <div>
+                                <Label htmlFor="years-training" required>Years Training</Label>
+                                <Select id="years-training" name="Years Training" required>
+                                    {trainingYearsOptions.map(opt => <option key={opt} value={opt} disabled={opt === 'Select...'}>{opt}</option>)}
+                                </Select>
+                                <HelpText isItalic>PLEASE BE HONEST.</HelpText>
+                            </div>
+                          </div>
+                          <div>
+                              <Label htmlFor="background" required>What is your background?</Label>
+                              <HelpText isItalic>PLEASE CHECK ALL THAT APPLY</HelpText>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-2">
+                                {backgrounds.map(option => (
+                                    <label key={option} className="flex items-center space-x-3 text-gray-300">
+                                        <input type="checkbox" name="background[]" value={option} className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
+                                        <span className="text-sm uppercase">{option}</span>
+                                    </label>
+                                ))}
+                                <div className="flex items-center space-x-3">
+                                    <input type="checkbox" id="background-other-checkbox" name="background[]" value="Other" className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
+                                    <Input type="text" name="background-other" placeholder="Other" className="flex-1"/>
+                                </div>
+                              </div>
+                          </div>
+                          <div>
+                              <Label htmlFor="fight-style" required>What is your fight style?</Label>
+                               <Select id="fight-style" name="Fight Style" required>
+                                  {fightStyleOptions.map(opt => <option key={opt} value={opt} disabled={opt === 'Select...'}>{opt}</option>)}
+                              </Select>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <div className="block text-sm font-bold text-gray-300 mb-2 uppercase">Have you ever obtained the rank of black belt in any martial arts?</div>
+                              <div className="flex items-center space-x-6 mt-2">
+                                  <label className="flex items-center space-x-2 text-gray-300"><input type="radio" name="Black Belt" value="Yes" className="h-4 w-4 bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500"/><span>Yes</span></label>
+                                  <label className="flex items-center space-x-2 text-gray-300"><input type="radio" name="Black Belt" value="No" className="h-4 w-4 bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500"/><span>No</span></label>
+                              </div>
+                            </div>
+                            <div>
+                                <Label htmlFor="bjj-rank" required>What is your bjj rank?</Label>
+                                <Input type="text" id="bjj-rank" name="BJJ Rank" required />
+                                <HelpText isUppercase>IF NO RANK, PLEASE LIST "NO RANK"</HelpText>
+                            </div>
+                          </div>
+                          <div>
+                              <Label htmlFor="anything-else">Is there anything else we should know about you?</Label>
+                              <Textarea id="anything-else" name="Anything Else" rows={4} />
+                               <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
+                          </div>
+                      </div>
                   </div>
               </div>
             </div>
-             <div>
-                <Label htmlFor="photo">Upload a photo of yourself from the waist up</Label>
-                <Input type="file" id="photo" name="Fighter Photo" accept="image/*" className="mt-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"/>
-                <HelpText isUppercase>PREFERRED, BUT NOT REQUIRED.</HelpText>
+            
+            <div className="text-center pt-8 mt-8 border-t border-gray-700">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="inline-block bg-red-600 text-white font-bebas text-2xl px-12 py-3 rounded-md tracking-wider hover:bg-red-700 transition-colors duration-300 transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </button>
+              {submitStatus === 'error' && (
+                <p className="text-red-500 mt-4">There was an error submitting your profile. Please check your connection and try again.</p>
+              )}
             </div>
-          </FormSection>
-
-          <FormSection title="CONTACT INFO">
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="email" required>Fighter Email Address</Label>
-                  <Input type="email" id="email" name="Email" required />
-                </div>
-                <div>
-                  <Label htmlFor="phone" required>Fighter Phone Number</Label>
-                  <Input type="tel" id="phone" name="Phone" required />
-                </div>
-             </div>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="instagram">What is your Instagram?</Label>
-                  <Input type="text" id="instagram" name="Instagram" />
-                   <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
-                </div>
-                <div>
-                  <Label htmlFor="facebook">What is your Facebook?</Label>
-                  <Input type="text" id="facebook" name="Facebook" />
-                  <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
-                </div>
-             </div>
-             <div>
-                <Label htmlFor="contact-method" required>Preferred Contact Method</Label>
-                <Select id="contact-method" name="Preferred Contact Method" required>
-                    <option>Email</option>
-                    <option>Phone Call</option>
-                    <option>Text Message</option>
-                    <option>Instagram</option>
-                    <option>Facebook</option>
-                    <option>Other</option>
-                </Select>
-                <HelpText isItalic>HOW SHOULD WE CONTACT YOU</HelpText>
-             </div>
-          </FormSection>
-
-          <div className="pt-8 mt-8 border-t border-gray-700">
-            <h2 className="text-2xl font-bebas text-red-600 tracking-wider uppercase">Event & Match Type</h2>
-            <div className="space-y-6 mt-6">
-                 <div>
-                  <Label htmlFor="bout-type" required>Choose Bout Type</Label>
-                  <Select id="bout-type" name="Bout Type" required>
-                      <option>MMA</option>
-                      <option>Muay Thai</option>
-                      <option>Boxing</option>
-                      <option>Grappling</option>
-                      <option>Team Grappling</option>
-                      <option>All of the above</option>
-                  </Select>
-                </div>
-                <div className="pt-8 mt-8 border-t border-gray-700">
-                    <h3 className="text-xl font-bebas text-white tracking-wider uppercase">Background & Experience</h3>
-                    <div className="space-y-6 mt-6">
-                        <div>
-                            <Label htmlFor="gym" required>What gym/​team do you represent?</Label>
-                            <Input type="text" id="gym" name="Gym/Team" placeholder='IF NONE, LIST "INDEPENDENT"' required />
-                            <HelpText isUppercase>IF NONE, LIST "INDEPENDENT"</HelpText>
-                        </div>
-                        <div>
-                            <Label htmlFor="matchup-contact">Who should we contact regarding matchups?</Label>
-                            <Select id="matchup-contact" name="Matchup Contact">
-                              <option>Myself</option>
-                              <option>My Coach / Manager</option>
-                            </Select>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <div className="block text-sm font-bold text-gray-300 mb-2 uppercase">What is your stance? <span className="text-red-500">*</span></div>
-                            <div className="flex items-center space-x-6 mt-2">
-                                {stances.map(stance => (
-                                    <label key={stance} className="flex items-center space-x-2 text-gray-300">
-                                        <input type="radio" name="Stance" value={stance} required className="h-4 w-4 bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500"/>
-                                        <span className="uppercase">{stance}</span>
-                                    </label>
-                                ))}
-                            </div>
-                          </div>
-                          <div>
-                              <Label htmlFor="years-training" required>Years Training</Label>
-                              <Select id="years-training" name="Years Training" required>
-                                  {trainingYearsOptions.map(opt => <option key={opt} value={opt} disabled={opt === 'Select...'}>{opt}</option>)}
-                              </Select>
-                              <HelpText isItalic>PLEASE BE HONEST.</HelpText>
-                          </div>
-                        </div>
-                        <div>
-                            <Label htmlFor="background" required>What is your background?</Label>
-                            <HelpText isItalic>PLEASE CHECK ALL THAT APPLY</HelpText>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-2">
-                              {backgrounds.map(option => (
-                                  <label key={option} className="flex items-center space-x-3 text-gray-300">
-                                      <input type="checkbox" name="background[]" value={option} className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
-                                      <span className="text-sm uppercase">{option}</span>
-                                  </label>
-                              ))}
-                              <div className="flex items-center space-x-3">
-                                  <input type="checkbox" id="background-other-checkbox" name="background[]" value="Other" className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500" />
-                                  <Input type="text" name="background-other" placeholder="Other" className="flex-1"/>
-                              </div>
-                            </div>
-                        </div>
-                        <div>
-                            <Label htmlFor="fight-style" required>What is your fight style?</Label>
-                             <Select id="fight-style" name="Fight Style" required>
-                                {fightStyleOptions.map(opt => <option key={opt} value={opt} disabled={opt === 'Select...'}>{opt}</option>)}
-                            </Select>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <div className="block text-sm font-bold text-gray-300 mb-2 uppercase">Have you ever obtained the rank of black belt in any martial arts?</div>
-                            <div className="flex items-center space-x-6 mt-2">
-                                <label className="flex items-center space-x-2 text-gray-300"><input type="radio" name="Black Belt" value="Yes" className="h-4 w-4 bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500"/><span>Yes</span></label>
-                                <label className="flex items-center space-x-2 text-gray-300"><input type="radio" name="Black Belt" value="No" className="h-4 w-4 bg-gray-700 border-gray-600 text-red-600 focus:ring-red-500"/><span>No</span></label>
-                            </div>
-                          </div>
-                          <div>
-                              <Label htmlFor="bjj-rank" required>What is your bjj rank?</Label>
-                              <Input type="text" id="bjj-rank" name="BJJ Rank" required />
-                              <HelpText isUppercase>IF NO RANK, PLEASE LIST "NO RANK"</HelpText>
-                          </div>
-                        </div>
-                        <div>
-                            <Label htmlFor="anything-else">Is there anything else we should know about you?</Label>
-                            <Textarea id="anything-else" name="Anything Else" rows={4} />
-                             <HelpText isUppercase>IF NONE, LEAVE BLANK</HelpText>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-          
-          <div className="text-center pt-8 mt-8 border-t border-gray-700">
-            <button
-              type="submit"
-              className="inline-block bg-red-600 text-white font-bebas text-2xl px-12 py-3 rounded-md tracking-wider hover:bg-red-700 transition-colors duration-300 transform hover:scale-105"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+          </form>
+        )}
       </div>
     </div>
   );
