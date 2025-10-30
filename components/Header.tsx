@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Page } from '../types';
 import { TICKETS_URL, PPV_URL, SHOPIFY_MERCH_URL } from '../constants';
 
@@ -36,6 +36,44 @@ const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, 
 );
 
 const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close mobile menu if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [mobileMenuRef]);
+
+  const handleMobileNav = (page: Page) => {
+    onNavigate(page);
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleMobilePpv = () => {
+    onOpenPpvModal();
+    setIsMobileMenuOpen(false);
+  };
+
+  const MobileMenuItem: React.FC<{ onClick: () => void; isActive?: boolean; children: React.ReactNode }> = ({ onClick, isActive, children }) => (
+    <button onClick={onClick} className={`block text-left w-full px-4 py-3 text-sm uppercase tracking-wider hover:bg-red-600 transition-colors ${isActive ? 'text-red-500 font-bold' : 'text-white'}`}>
+      {children}
+    </button>
+  );
+
+  const MobileMenuLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
+     <a href={href} target="_blank" rel="noopener noreferrer" className="block text-left w-full px-4 py-3 text-sm text-white uppercase tracking-wider hover:bg-red-600 transition-colors">
+      {children}
+    </a>
+  );
+
   return (
     <header className="bg-black/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-800">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,32 +117,33 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal
           </div>
 
            {/* Mobile Menu */}
-           <div className="md:hidden">
-            <select
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === 'open_ppv_modal') {
-                    onOpenPpvModal();
-                  } else if (value.startsWith('http')) {
-                    window.open(value, '_blank');
-                  } else {
-                    onNavigate(value as Page)
-                  }
-                }}
-                value={currentPage}
-                className="bg-gray-900 text-white border border-gray-700 rounded p-2"
-              >
-                <option value="home">Home</option>
-                <option value={TICKETS_URL}>Buy Tickets</option>
-                <option value="open_ppv_modal">Buy PPV</option>
-                <option value={SHOPIFY_MERCH_URL}>Merch</option>
-                <option value="previous-events">Previous Events</option>
-                <option value="ring-girls">Ring Girls</option>
-                <option value="venue">Venue</option>
-                <option value="fight-for-us">Fight For Us</option>
-                <option value="media-press">Media/Press</option>
-                <option value="contact-us">Contact Us</option>
-            </select>
+           <div className="md:hidden" ref={mobileMenuRef}>
+            <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
+                aria-label="Open menu"
+                aria-expanded={isMobileMenuOpen}
+            >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"} />
+                </svg>
+            </button>
+
+            {isMobileMenuOpen && (
+              <div className="absolute top-20 right-4 w-64 bg-gray-900 border border-gray-700 rounded-lg shadow-lg py-2">
+                <MobileMenuLink href={TICKETS_URL}>Buy Tickets</MobileMenuLink>
+                <MobileMenuItem onClick={handleMobilePpv}>Buy PPV</MobileMenuItem>
+                <MobileMenuLink href={SHOPIFY_MERCH_URL}>Merch</MobileMenuLink>
+                <div className="border-t border-gray-700 my-2"></div>
+                <MobileMenuItem onClick={() => handleMobileNav('home')} isActive={currentPage === 'home'}>Home</MobileMenuItem>
+                <MobileMenuItem onClick={() => handleMobileNav('previous-events')} isActive={currentPage === 'previous-events'}>Previous Events</MobileMenuItem>
+                <MobileMenuItem onClick={() => handleMobileNav('ring-girls')} isActive={currentPage === 'ring-girls'}>Ring Girls</MobileMenuItem>
+                <MobileMenuItem onClick={() => handleMobileNav('venue')} isActive={currentPage === 'venue'}>Venue</MobileMenuItem>
+                <MobileMenuItem onClick={() => handleMobileNav('fight-for-us')} isActive={currentPage === 'fight-for-us'}>Fight For Us</MobileMenuItem>
+                <MobileMenuItem onClick={() => handleMobileNav('media-press')} isActive={currentPage === 'media-press'}>Media/Press</MobileMenuItem>
+                <MobileMenuItem onClick={() => handleMobileNav('contact-us')} isActive={currentPage === 'contact-us'}>Contact Us</MobileMenuItem>
+              </div>
+            )}
           </div>
         </div>
       </nav>
