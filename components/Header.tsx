@@ -130,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal
             </button>
 
             {isMobileMenuOpen && (
-              <div className="absolute top-20 right-4 w-64 bg-gray-900 border border-gray-700 rounded-lg shadow-lg py-2">
+              <div className="absolute top-20 right-4 w-64 bg-gray-900 border border-gray-700 rounded-lg shadow-lg py-2 max-h-[calc(100vh-7rem)] overflow-y-auto">
                 <MobileMenuLink href={TICKETS_URL}>Buy Tickets</MobileMenuLink>
                 <MobileMenuItem onClick={handleMobilePpv}>Buy PPV</MobileMenuItem>
                 <MobileMenuLink href={SHOPIFY_MERCH_URL}>Merch</MobileMenuLink>
