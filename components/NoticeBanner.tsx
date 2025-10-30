@@ -11,7 +11,16 @@ const NoticeBanner: React.FC = () => {
     <div className="bg-yellow-400 text-black p-3 text-center text-sm relative z-[100]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <span>
-          This is not the official website for Valley Fight Series. Go to{' '}
+          Unofficial website for Valley Fight Series by{' '}
+          <a
+            href="https://turner.framer.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold underline hover:text-gray-800 transition-colors"
+          >
+            Thomas
+          </a>
+          .{' '}Go to{' '}
           <a
             href="https://www.valleyfightseries.com/"
             target="_blank"

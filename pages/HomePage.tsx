@@ -3,6 +3,10 @@ import CountdownTimer from '../components/CountdownTimer';
 import FloatingVideoPlayer from '../components/FloatingVideoPlayer';
 import { EVENT_DATE_TARGET, TICKETS_URL, PPV_URL, VENUE_MAPS_URL, VENUE_IFRAME_SRC, HERO_CAROUSEL_IMAGES } from '../constants';
 
+interface HomePageProps {
+  onOpenPpvModal: () => void;
+}
+
 const EventCard: React.FC<{ title: string; date: string; disciplines: string[] }> = ({ title, date, disciplines }) => (
   <div className="bg-gray-900/70 border border-gray-700 rounded-lg p-6 backdrop-blur-sm transform hover:scale-105 transition-transform duration-300">
     <h3 className="text-4xl font-bebas text-red-600 tracking-wider">{title}</h3>
@@ -17,7 +21,7 @@ const EventCard: React.FC<{ title: string; date: string; disciplines: string[] }
   </div>
 );
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -62,14 +66,12 @@ const HomePage: React.FC = () => {
             >
               Buy Tickets
             </a>
-            <a
-              href={PPV_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={onOpenPpvModal}
               className="w-full sm:w-auto inline-block bg-transparent border-2 border-red-600 text-white font-bebas text-3xl px-12 py-3 rounded-md tracking-wider hover:bg-red-600 transition-colors duration-300 transform hover:scale-105"
             >
               Buy PPV
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -104,20 +106,18 @@ const HomePage: React.FC = () => {
             >
               Buy Tickets
             </a>
-            <a
-              href={PPV_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={onOpenPpvModal}
               className="w-full sm:w-auto inline-block bg-gray-800 text-white font-bebas text-3xl px-12 py-3 rounded-md tracking-wider hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105"
             >
               Buy PPV
-            </a>
+            </button>
           </div>
         </div>
       </div>
       
       {/* Venue Section */}
-      <div className="bg-gray-900 py-16 sm:py-24">
+      <div id="venue" className="bg-gray-900 py-16 sm:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-bebas tracking-wider text-white">The Venue</h2>

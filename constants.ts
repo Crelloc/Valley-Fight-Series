@@ -1,4 +1,4 @@
-import { Playlist } from './types';
+import { Playlist, RingGirl } from './types';
 
 // The countdown will automatically target the next upcoming Nov 21st at 2 PM.
 export const EVENT_DATE_TARGET = { month: 10, day: 21, hour: 14 }; // Month is 0-indexed (10 = November), hour is 24-hr format (14 = 2pm)
@@ -14,9 +14,38 @@ export const VENUE_MAPS_URL = 'https://maps.app.goo.gl/B7b4X34ZhuS1egTX7';
 export const VENUE_IFRAME_SRC = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.8725868755087!2d-119.64932152415307!3d36.985622772194844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8094475b8a325d8b%3A0x7f48d7432d12ddfb!2s777%20Jackpot%20Ln%2C%20Friant%2C%20CA%2093626!5e1!3m2!1sen!2sus!4v1761721556479!5m2!1sen!2sus';
 
 export const HERO_CAROUSEL_IMAGES = [
-  'https://scontent-sea1-1.cdninstagram.com/v/t51.82787-15/568755637_18531461407039806_4623437137023200031_n.heic?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=Mzc0OTg2MDc0Mjk2NDE4MjE5OA%3D%3D.3-ccb1-7&ccb=1-7&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=5mUBdMgfX-sQ7kNvwFbkt0j&_nc_oc=AdnRbckdQ3kTIhKEWlMJsgBDBEylZQbyzmXnfBGjdRKLzO9akdDwZ3OrlHlV5xx3Hk8&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-sea1-1.cdninstagram.com&_nc_gid=4Y1RI13IuCpLCRBLLCLN5w&oh=00_Afc10v-wyG97fcp-qDh7uGNQHCGrmBODzijz_OFAYuRzKg&oe=69061BA2',
-  'https://scontent-sea5-1.cdninstagram.com/v/t51.82787-15/573927039_18532084396039806_6101295634535002027_n.heic?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=Mzc1MjE2MjYzOTEwODg3MDEyNw%3D%3D.3-ccb1-7&ccb=1-7&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=GJLCxnQ1ogEQ7kNvwFYALIX&_nc_oc=AdlhMM_Fx5Mw8sgWThC-h_Ou-WPgt3MA_8_klJKsBT3VsCqxJ3YIMgzXxzm2Hrcrn5g&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-sea5-1.cdninstagram.com&_nc_gid=4Y1RI13IuCpLCRBLLCLN5w&oh=00_AfdodBJ_HsUchP80RhNUomUC5Lzyqrh_3o3XxNohkMy-zA&oe=6906230B',
-  'https://scontent-sea1-1.cdninstagram.com/v/t51.82787-15/568580875_18531022453039806_4245843058258021358_n.heic?stp=dst-jpg_e35_tt6&_nc_cat=106&ig_cache_key=Mzc0ODU2NTk1MTUxMzI2OTM4Mg%3D%3D.3-ccb1-7&ccb=1-7&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=AJcnkqQ0sYMQ7kNvwFVLO8w&_nc_oc=Adle9HXKVjvMykb9WzQhvYFT0zK021Q0mNtqST9wCUgxkIKz-mAAy8aom4vhjBi82K0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-sea1-1.cdninstagram.com&_nc_gid=4Y1RI13IuCpLCRBLLCLN5w&oh=00_AffJ044NGmGrYwiiBB9EilFLCWwcu3afEn_emoVgrm1Qng&oe=690626FF',
+  '/home1.jpeg',
+  '/home2.jpeg',
+  '/home3.jpeg',
+];
+
+export const RING_GIRLS_HERO_IMAGE = '/ringgirls.jpg';
+
+export const RING_GIRLS_DATA: RingGirl[] = [
+  {
+    name: 'Domonique Marie',
+    bio: 'Dom is a Muay Thai fighter and MMA fan who trains in Muay Thai and Wrestling at Tusk MMA under Coach Blake Marshall. As an avid gym and fitness enthusiast, you can often catch Dom pumping iron in the weight room. By day, Dom is a full time Medicine Technician and huge animal lover who enjoys traveling to the coast and visiting wineries, sipping California’s finest.',
+    image: '/girl1.jpg',
+    socialLink: 'https://www.instagram.com/domoniquemariie/?hl=en',
+  },
+  {
+    name: 'Yuliza Velazquez',
+    bio: 'Yuli is a fitness enthusiast who is also a big combat sports fan; she truly enjoys having the best seat in the house!',
+    image: '/girl2.jpg',
+    socialLink: 'https://www.instagram.com/_yulizavelazquez/?hl=en',
+  },
+  {
+    name: 'Susan Cordova',
+    bio: 'Susan is a fitness enthusiast and used to train in Combat Sports!',
+    image: '/girl3.jpg',
+    socialLink: 'https://www.instagram.com/susancordovafit/?hl=en',
+  },
+  {
+    name: 'Jackie',
+    bio: 'Jackie has been involved in MMA for over 10 years, training at Valley Fight Club as an aspiring Muay Thai fighter!',
+    image: '/girl4.jpg',
+    socialLink: 'https://www.instagram.com/jlh_08_/?hl=en',
+  },
 ];
 
 
