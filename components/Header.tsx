@@ -92,6 +92,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                 value={currentPage}
                 className="bg-gray-900 text-white border border-gray-700 rounded p-2"
               >
+                <option value="home">Home</option>
                 <option value="previous-events">Previous Events</option>
                 <option value="fight-for-us">Fight For Us</option>
                 <option value={TICKETS_URL}>Buy Tickets</option>
