@@ -60,6 +60,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenPpvModal }) => {
               <FooterExtLink href={TICKETS_URL}>Buy Tickets</FooterExtLink>
               <FooterLink onClick={onOpenPpvModal}>Buy PPV</FooterLink>
               <FooterExtLink href={SHOPIFY_MERCH_URL}>Merch</FooterExtLink>
+              <FooterLink onClick={() => onNavigate('venue')}>Directions To Venue</FooterLink>
             </div>
              <div className="flex items-center space-x-6 justify-center md:justify-start mt-6">
                 <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
