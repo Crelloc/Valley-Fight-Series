@@ -1,18 +1,15 @@
-
 import React from 'react';
-import { YOUTUBE_URL, INSTAGRAM_URL, TICKETS_URL, PPV_URL, SHOPIFY_MERCH_URL } from '../constants';
-import { Page } from '../types';
+import { YOUTUBE_URL, INSTAGRAM_URL, TICKETS_URL } from '../constants';
+import ShopifyMerchLink from './ShopifyMerchLink';
 
 interface FooterProps {
-  currentPage: Page;
-  onNavigate: (page: Page) => void;
   onOpenPpvModal: () => void;
 }
 
-const FooterLink: React.FC<{ onClick: () => void; children: React.ReactNode }> = ({ onClick, children }) => (
-    <button onClick={onClick} className="text-gray-400 hover:text-white transition-colors duration-300 text-center md:text-left">
+const FooterLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
+    <a href={href} className="text-gray-400 hover:text-white transition-colors duration-300 text-center md:text-left">
         {children}
-    </button>
+    </a>
 );
 
 const FooterExtLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
@@ -21,7 +18,7 @@ const FooterExtLink: React.FC<{ href: string; children: React.ReactNode }> = ({ 
     </a>
 );
 
-const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenPpvModal }) => {
+const Footer: React.FC<FooterProps> = ({ onOpenPpvModal }) => {
   return (
     <footer className="bg-gray-900 border-t border-gray-800 mt-auto">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -29,9 +26,9 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenPpvModal }) => {
           
           {/* Column 1: Brand & Copyright */}
           <div>
-            <button onClick={() => onNavigate('home')} className="text-2xl font-bebas tracking-widest text-white inline-block">
+            <a href="/" className="text-2xl font-bebas tracking-widest text-white inline-block">
               VALLEY <span className="text-red-600">FIGHT</span> SERIES
-            </button>
+            </a>
             <p className="text-gray-500 text-sm mt-2">
               &copy; {new Date().getFullYear()} Valley Fight Series. All Rights Reserved.
             </p>
@@ -44,12 +41,12 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenPpvModal }) => {
           <div>
             <h3 className="font-bebas text-lg tracking-wider text-white uppercase mb-4">Navigation</h3>
             <div className="flex flex-col space-y-2 items-center md:items-start">
-                <FooterLink onClick={() => onNavigate('previous-events')}>Previous Events</FooterLink>
-                <FooterLink onClick={() => onNavigate('ring-girls')}>Ring Girls</FooterLink>
-                <FooterLink onClick={() => onNavigate('venue')}>Venue</FooterLink>
-                <FooterLink onClick={() => onNavigate('fight-for-us')}>Fight For Us</FooterLink>
-                <FooterLink onClick={() => onNavigate('media-press')}>Media/Press</FooterLink>
-                <FooterLink onClick={() => onNavigate('contact-us')}>Contact Us</FooterLink>
+                <FooterLink href="/previous-events">Previous Events</FooterLink>
+                <FooterLink href="/ring-girls">Ring Girls</FooterLink>
+                <FooterLink href="/venue">Venue</FooterLink>
+                <FooterLink href="/fight-for-us">Fight For Us</FooterLink>
+                <FooterLink href="/media-press">Media/Press</FooterLink>
+                <FooterLink href="/contact-us">Contact Us</FooterLink>
             </div>
           </div>
 
@@ -58,9 +55,11 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenPpvModal }) => {
             <h3 className="font-bebas text-lg tracking-wider text-white uppercase mb-4">Actions</h3>
             <div className="flex flex-col space-y-2 items-center md:items-start">
               <FooterExtLink href={TICKETS_URL}>Buy Tickets</FooterExtLink>
-              <FooterLink onClick={onOpenPpvModal}>Buy PPV</FooterLink>
-              <FooterExtLink href={SHOPIFY_MERCH_URL}>Merch</FooterExtLink>
-              <FooterLink onClick={() => onNavigate('venue')}>Directions To Venue</FooterLink>
+              <button onClick={onOpenPpvModal} className="text-gray-400 hover:text-white transition-colors duration-300 text-center md:text-left">Buy PPV</button>
+              <ShopifyMerchLink className="text-gray-400 hover:text-white transition-colors duration-300">
+                Merch
+              </ShopifyMerchLink>
+              <FooterLink href="/venue">Directions To Venue</FooterLink>
             </div>
              <div className="flex items-center space-x-6 justify-center md:justify-start mt-6">
                 <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">

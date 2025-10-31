@@ -1,41 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Page } from '../types';
-import { TICKETS_URL, PPV_URL, SHOPIFY_MERCH_URL } from '../constants';
+import { TICKETS_URL } from '../constants';
+import ShopifyMerchLink from './ShopifyMerchLink';
 
 interface HeaderProps {
-  currentPage: Page;
-  onNavigate: (page: Page) => void;
+  currentPath: string;
   onOpenPpvModal: () => void;
 }
 
-const NavButton: React.FC<{
-  page: Page;
-  currentPage: Page;
-  onClick: (page: Page) => void;
+const NavLink: React.FC<{
+  href: string;
+  currentPath: string;
   children: React.ReactNode;
-}> = ({ page, currentPage, onClick, children }) => (
-  <button
-    onClick={() => onClick(page)}
-    className={`px-3 py-2 text-sm uppercase tracking-wider transition-colors duration-300 ${
-      currentPage === page ? 'text-red-600' : 'text-white hover:text-red-500'
-    }`}
-  >
-    {children}
-  </button>
-);
-
-const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
+}> = ({ href, currentPath, children }) => (
   <a
     href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="px-3 py-2 text-sm text-white uppercase tracking-wider transition-colors duration-300 hover:text-red-500"
+    className={`px-3 py-2 text-sm uppercase tracking-wider transition-colors duration-300 ${
+      currentPath === href ? 'text-red-600' : 'text-white hover:text-red-500'
+    }`}
   >
     {children}
   </a>
 );
 
-const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal }) => {
+const Header: React.FC<HeaderProps> = ({ currentPath, onOpenPpvModal }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
@@ -52,24 +39,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal
     };
   }, [mobileMenuRef]);
 
-  const handleMobileNav = (page: Page) => {
-    onNavigate(page);
-    setIsMobileMenuOpen(false);
-  };
-
   const handleMobilePpv = () => {
     onOpenPpvModal();
     setIsMobileMenuOpen(false);
   };
 
-  const MobileMenuItem: React.FC<{ onClick: () => void; isActive?: boolean; children: React.ReactNode }> = ({ onClick, isActive, children }) => (
-    <button onClick={onClick} className={`block text-left w-full px-4 py-3 text-sm uppercase tracking-wider hover:bg-red-600 transition-colors ${isActive ? 'text-red-500 font-bold' : 'text-white'}`}>
+  const MobileMenuItem: React.FC<{ onClick: () => void; children: React.ReactNode }> = ({ onClick, children }) => (
+    <button onClick={onClick} className={`block text-left w-full px-4 py-3 text-sm uppercase tracking-wider hover:bg-red-600 transition-colors text-white`}>
       {children}
     </button>
   );
 
-  const MobileMenuLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-     <a href={href} target="_blank" rel="noopener noreferrer" className="block text-left w-full px-4 py-3 text-sm text-white uppercase tracking-wider hover:bg-red-600 transition-colors">
+  const MobileMenuLink: React.FC<{ href: string; isActive?: boolean; children: React.ReactNode; onClick?: () => void; external?: boolean; }> = ({ href, isActive, children, onClick, external = false }) => (
+     <a href={href} target={external ? '_blank' : '_self'} rel={external ? 'noopener noreferrer' : ''} onClick={onClick} className={`block text-left w-full px-4 py-3 text-sm uppercase tracking-wider hover:bg-red-600 transition-colors ${isActive ? 'text-red-500 font-bold' : 'text-white'}`}>
       {children}
     </a>
   );
@@ -79,13 +61,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div
-            className="cursor-pointer"
-            onClick={() => onNavigate('home')}
-          >
+          <a href="/">
             <img src="/logo.jpg" alt="Valley Fight Series Logo" width="75" height="75" />
-
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
@@ -95,13 +73,13 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal
             >
               Buy PPV
             </button>
-            <NavLink href={SHOPIFY_MERCH_URL}>Merch</NavLink>
-            <NavButton page="previous-events" currentPage={currentPage} onClick={onNavigate}>Previous Events</NavButton>
-            <NavButton page="ring-girls" currentPage={currentPage} onClick={onNavigate}>Ring Girls</NavButton>
-            <NavButton page="venue" currentPage={currentPage} onClick={onNavigate}>Venue</NavButton>
-            <NavButton page="fight-for-us" currentPage={currentPage} onClick={onNavigate}>Fight For Us</NavButton>
-            {/* <NavButton page="media-press" currentPage={currentPage} onClick={onNavigate}>Media/Press</NavButton>
-            <NavButton page="contact-us" currentPage={currentPage} onClick={onNavigate}>Contact Us</NavButton> */}
+            <ShopifyMerchLink className="px-3 py-2 text-sm text-white uppercase tracking-wider transition-colors duration-300 hover:text-red-500">
+              Merch
+            </ShopifyMerchLink>
+            <NavLink href="/previous-events" currentPath={currentPath}>Previous Events</NavLink>
+            <NavLink href="/ring-girls" currentPath={currentPath}>Ring Girls</NavLink>
+            <NavLink href="/venue" currentPath={currentPath}>Venue</NavLink>
+            <NavLink href="/fight-for-us" currentPath={currentPath}>Fight For Us</NavLink>
           </div>
 
           {/* Call to Action */}
@@ -131,17 +109,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate, onOpenPpvModal
 
             {isMobileMenuOpen && (
               <div className="absolute top-20 right-4 w-64 bg-gray-900 border border-gray-700 rounded-lg shadow-lg py-2 max-h-[calc(100vh-7rem)] overflow-y-auto">
-                <MobileMenuLink href={TICKETS_URL}>Buy Tickets</MobileMenuLink>
+                <MobileMenuLink href={TICKETS_URL} external onClick={() => setIsMobileMenuOpen(false)}>Buy Tickets</MobileMenuLink>
                 <MobileMenuItem onClick={handleMobilePpv}>Buy PPV</MobileMenuItem>
-                <MobileMenuLink href={SHOPIFY_MERCH_URL}>Merch</MobileMenuLink>
+                <ShopifyMerchLink className="block text-left w-full px-4 py-3 text-sm text-white uppercase tracking-wider hover:bg-red-600 transition-colors">
+                  Merch
+                </ShopifyMerchLink>
                 <div className="border-t border-gray-700 my-2"></div>
-                <MobileMenuItem onClick={() => handleMobileNav('home')} isActive={currentPage === 'home'}>Home</MobileMenuItem>
-                <MobileMenuItem onClick={() => handleMobileNav('previous-events')} isActive={currentPage === 'previous-events'}>Previous Events</MobileMenuItem>
-                <MobileMenuItem onClick={() => handleMobileNav('ring-girls')} isActive={currentPage === 'ring-girls'}>Ring Girls</MobileMenuItem>
-                <MobileMenuItem onClick={() => handleMobileNav('venue')} isActive={currentPage === 'venue'}>Venue</MobileMenuItem>
-                <MobileMenuItem onClick={() => handleMobileNav('fight-for-us')} isActive={currentPage === 'fight-for-us'}>Fight For Us</MobileMenuItem>
-                <MobileMenuItem onClick={() => handleMobileNav('media-press')} isActive={currentPage === 'media-press'}>Media/Press</MobileMenuItem>
-                <MobileMenuItem onClick={() => handleMobileNav('contact-us')} isActive={currentPage === 'contact-us'}>Contact Us</MobileMenuItem>
+                <MobileMenuLink href="/" isActive={currentPath === '/'} onClick={() => setIsMobileMenuOpen(false)}>Home</MobileMenuLink>
+                <MobileMenuLink href="/previous-events" isActive={currentPath === '/previous-events'} onClick={() => setIsMobileMenuOpen(false)}>Previous Events</MobileMenuLink>
+                <MobileMenuLink href="/ring-girls" isActive={currentPath === '/ring-girls'} onClick={() => setIsMobileMenuOpen(false)}>Ring Girls</MobileMenuLink>
+                <MobileMenuLink href="/venue" isActive={currentPath === '/venue'} onClick={() => setIsMobileMenuOpen(false)}>Venue</MobileMenuLink>
+                <MobileMenuLink href="/fight-for-us" isActive={currentPath === '/fight-for-us'} onClick={() => setIsMobileMenuOpen(false)}>Fight For Us</MobileMenuLink>
+                <MobileMenuLink href="/media-press" isActive={currentPath === '/media-press'} onClick={() => setIsMobileMenuOpen(false)}>Media/Press</MobileMenuLink>
+                <MobileMenuLink href="/contact-us" isActive={currentPath === '/contact-us'} onClick={() => setIsMobileMenuOpen(false)}>Contact Us</MobileMenuLink>
               </div>
             )}
           </div>

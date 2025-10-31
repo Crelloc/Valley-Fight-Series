@@ -11,5 +11,3 @@ export interface RingGirl {
   image: string;
   socialLink: string;
 }
-
-export type Page = 'home' | 'previous-events' | 'fight-for-us' | 'contact-us' | 'media-press' | 'ring-girls' | 'venue';

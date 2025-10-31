@@ -5,7 +5,8 @@ export const EVENT_DATE_TARGET = { month: 10, day: 21, hour: 14 }; // Month is 0
 
 export const TICKETS_URL = 'https://www.eventbrite.com/e/valley-fight-series-18-tickets-1118601811129?aff=ebdsshcopyurl&utm-campaign=social&utm-content=attendeeshare&utm-medium=discovery&utm-source=cp&utm-term=listing';
 export const PPV_URL = 'https://starfund.stream/organizations/vfs';
-export const SHOPIFY_MERCH_URL = 'https://valleyfightseries.myshopify.com/?_ab=0&pb=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVIyWVd4c1pYbG1hV2RvZEhObGNtbGxjeTV0ZVhOb2IzQnBabmt1WTI5dEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMC0zMVQwMTozMTozMS4yNTBaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--26b1ea4e81a1d07b4608edea68195ace58d3343c&_fd=0&_sc=1&key=65bce868cc816abeaaff9c5fd573e17e1c789535a4f35f330042f827951cb51e&preview_theme_id=147609813044'; // Placeholder
+export const SHOPIFY_MERCH_URL = 'https://valleyfightseries.myshopify.com/password?_ab=0&pb=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVIyWVd4c1pYbG1hV2RvZEhObGNtbGxjeTV0ZVhOb2IzQnBabmt1WTI5dEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMC0zMVQwMTozMTozMS4yNTBaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--26b1ea4e81a1d07b4608edea68195ace58d3343c&_fd=0&_sc=1&key=65bce868cc816abeaaff9c5fd573e17e1c789535a4f35f330042f827951cb51e&preview_theme_id=147609813044'; // Placeholder
+export const SHOPIFY_MERCH_URL_PREVIEW = 'https://valleyfightseries.myshopify.com/password?_ab=0&pb=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVIyWVd4c1pYbG1hV2RvZEhObGNtbGxjeTV0ZVhOb2IzQnBabmt1WTI5dEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMC0zMVQwMTozMTozMS4yNTBaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--26b1ea4e81a1d07b4608edea68195ace58d3343c&_fd=0&_sc=1&key=65bce868cc816abeaaff9c5fd573e17e1c789535a4f35f330042f827951cb51e&preview_theme_id=147609813044';
 export const INSTAGRAM_URL = 'https://www.instagram.com/vfsmma/';
 export const YOUTUBE_URL = 'https://www.youtube.com/@ValleyFightSeriesMMA';
 
