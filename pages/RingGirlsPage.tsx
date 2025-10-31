@@ -1,9 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { RING_GIRLS_HERO_IMAGE, RING_GIRLS_DATA, TICKETS_URL } from '../constants';
 import { RingGirl } from '../types';
 
 const RingGirlCard: React.FC<{ girl: RingGirl }> = ({ girl }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [linkProps, setLinkProps] = useState<{ href: string; target?: string; rel?: string }>({
+    href: girl.socialLink,
+    target: '_blank',
+    rel: 'noopener noreferrer',
+  });
+
+  useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      try {
+        const url = new URL(girl.socialLink);
+        const username = url.pathname.split('/').filter(Boolean)[0];
+        if (username) {
+          setLinkProps({ href: `instagram://user?username=${username}` });
+        }
+      } catch (e) {
+        console.error("Could not parse Instagram URL for mobile deeplink:", girl.socialLink);
+      }
+    }
+  }, [girl.socialLink]);
+
   const TRUNCATE_LIMIT = 120;
   const isLongBio = girl.bio.length > TRUNCATE_LIMIT;
 
@@ -31,9 +52,7 @@ const RingGirlCard: React.FC<{ girl: RingGirl }> = ({ girl }) => {
         )}
         
         <a 
-          href={girl.socialLink}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...linkProps}
           className="text-white hover:text-red-500 transition-colors mt-auto self-start"
           aria-label={`Follow ${girl.name} on Instagram`}
         >
