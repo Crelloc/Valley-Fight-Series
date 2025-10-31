@@ -1,5 +1,5 @@
 import React from 'react';
-import { SHOPIFY_MERCH_URL_PREVIEW } from '../constants';
+import { IS_SHOPIFY_LIVE, SHOPIFY_MERCH_URL, SHOPIFY_MERCH_URL_PREVIEW } from '../constants';
 
 interface ShopifyMerchLinkProps {
   className?: string;
@@ -7,12 +7,27 @@ interface ShopifyMerchLinkProps {
 }
 
 const ShopifyMerchLink: React.FC<ShopifyMerchLinkProps> = ({ className, children }) => {
+  if (IS_SHOPIFY_LIVE) {
+    return (
+      <a
+        href={SHOPIFY_MERCH_URL}
+        // target="_blank"
+        // rel="noopener noreferrer"
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+
   // We use a form to POST directly to the password-protected Shopify page.
   // This bypasses the intermediate redirect page and solves the browser history issue.
   return (
     <form
       method="post"
       action={SHOPIFY_MERCH_URL_PREVIEW}
+    //   target="_blank"
+    //   rel="noopener noreferrer"
       className="inline" // Use inline to not disrupt layout
     >
       <input type="hidden" name="form_type" value="storefront_password" />
