@@ -49,10 +49,10 @@ const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
         <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black to-transparent"></div>
         <div className="relative z-10 p-4">
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-bebas text-white tracking-widest leading-none">
-            VFS 23 & 24
+            VFS 24
           </h1>
           <h2 className="text-2xl md:text-4xl font-bebas text-red-600 tracking-wider mt-2 mb-8">
-            NOV 21ST & 22ND
+            NOV 22ND
           </h2>
           
           <CountdownTimer target={EVENT_DATE_TARGET} />
@@ -87,14 +87,9 @@ const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <EventCard 
-              title="VFS 23"
-              date="Thursday, NOV 21ST"
-              disciplines={["PRO/AM BOXING", "YOUTH BOXING", "PRO/AM MUAY THAI"]}
-            />
-            <EventCard 
               title="VFS 24"
-              date="Friday, NOV 22ND"
-              disciplines={["PRO/AM MMA", "PRO/AM BJJ", "YOUTH BJJ", "YOUTH PANKRATION"]}
+              date="Saturday, NOV 22ND"
+              disciplines={["PRO/AM MMA", "PRO/AM MUAY THAI", "PRO/AM/YOUTH BJJ", "YOUTH PANKRATION"]}
             />
           </div>
            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto">
