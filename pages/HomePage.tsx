@@ -8,7 +8,7 @@ interface HomePageProps {
 }
 
 const EventCard: React.FC<{ title: string; date: string; disciplines: string[] }> = ({ title, date, disciplines }) => (
-  <div className="bg-gray-900/70 border border-gray-700 rounded-lg p-6 backdrop-blur-sm transform hover:scale-105 transition-transform duration-300">
+  <div className="bg-gray-900/70 border border-gray-700 rounded-lg p-6 backdrop-blur-sm transform hover:scale-105 transition-transform duration-300 w-full max-w-md">
     <h3 className="text-4xl font-bebas text-red-600 tracking-wider">{title}</h3>
     <p className="text-lg text-gray-300 font-bold mb-4">{date}</p>
     <ul className="space-y-2">
@@ -52,7 +52,7 @@ const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
             VFS 24
           </h1>
           <h2 className="text-2xl md:text-4xl font-bebas text-red-600 tracking-wider mt-2 mb-8">
-            NOV 22ND
+            SATURDAY, NOV 22ND
           </h2>
           
           <CountdownTimer target={EVENT_DATE_TARGET} />
@@ -80,18 +80,25 @@ const HomePage: React.FC<HomePageProps> = ({ onOpenPpvModal }) => {
       <div className="bg-black py-16 sm:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-5xl font-bebas tracking-wider text-white">Two Nights of Action</h2>
+            <h2 className="text-5xl font-bebas tracking-wider text-white">Fight Night</h2>
             <p className="text-gray-400 mt-2 max-w-2xl mx-auto">
-              Valley Fight Series returns with back-to-back nights of combat sports, featuring professionals, amateurs, and the next generation of youth fighters.
+              Valley Fight Series returns for a night of action-packed combat sports, featuring professionals, amateurs, and the next generation of youth fighters.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <EventCard 
-              title="VFS 24"
-              date="Saturday, NOV 22ND"
-              disciplines={["PRO/AM MMA", "PRO/AM MUAY THAI", "PRO/AM/YOUTH BJJ", "YOUTH PANKRATION"]}
-            />
+          
+          {/* 
+            Flex container with wrap and center justification.
+            This ensures that 1 card is centered, and multiple cards (if added)
+            will align in a row centered, wrapping on smaller screens.
+          */}
+          <div className="flex flex-wrap justify-center gap-8 w-full">
+             <EventCard 
+                title="VFS 24"
+                date="Saturday, NOV 22ND"
+                disciplines={["PRO/AM MMA", "PRO/AM MUAY THAI", "PRO/AM/YOUTH BJJ", "YOUTH PANKRATION"]}
+              />
           </div>
+
            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto">
             <a
               href={TICKETS_URL}
