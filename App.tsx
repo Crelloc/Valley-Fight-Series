@@ -7,6 +7,7 @@ import FightForUsPage from './pages/FightForUsPage';
 import ContactUsPage from './pages/ContactUsPage';
 import MediaPressPage from './pages/MediaPressPage';
 import RingGirlsPage from './pages/RingGirlsPage';
+import TicketsPage from './pages/TicketsPage';
 import NoticeBanner from './components/NoticeBanner';
 import PpvModal from './components/PpvModal';
 
@@ -99,6 +100,8 @@ const App: React.FC = () => {
         return <HomePage onOpenPpvModal={handleOpenPpvModal} />;
       case '/previous-events':
         return <PreviousEventsPage />;
+      case '/tickets':
+        return <TicketsPage />;
       case '/fight-for-us':
         return <FightForUsPage />;
       case '/contact-us':

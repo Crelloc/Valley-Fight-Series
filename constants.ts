@@ -3,8 +3,8 @@ import { Playlist, RingGirl } from './types';
 // The countdown will automatically target the next upcoming Nov 21st at 2 PM.
 export const EVENT_DATE_TARGET = { month: 10, day: 21, hour: 14 }; // Month is 0-indexed (10 = November), hour is 24-hr format (14 = 2pm)
 export const IS_SHOPIFY_LIVE = false;
-
-export const TICKETS_URL = 'https://www.eventbrite.com/e/valley-fight-series-18-tickets-1118601811129?aff=ebdsshcopyurl&utm-campaign=social&utm-content=attendeeshare&utm-medium=discovery&utm-source=cp&utm-term=listing';
+export const TICKETS_URL = 'https://www.eventbrite.com/o/valley-fight-series-33837553359';
+// export const TICKETS_URL = 'https://www.eventbrite.com/checkout-external?eid=1849591490939&parent=https%3A%2F%2Fwww.eventbrite.com%2Fe%2Fvalley-fight-series-24-tickets-1849591490939%3Faff%3Debdsshcopyurl%26utm-campaign%3Dsocial%26utm-content%3Dattendeeshare%26utm-medium%3Ddiscovery%26utm-term%3Dorganizer-profile%26utm-share-source%3Dorganizer-profile&modal=1&aff=ebdsshcopyurl';
 export const PPV_URL = 'https://starfund.stream/organizations/vfs';
 export const SHOPIFY_MERCH_URL = 'https://valleyfightseries.myshopify.com/?_ab=0&pb=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVIyWVd4c1pYbG1hV2RvZEhObGNtbGxjeTV0ZVhOb2IzQnBabmt1WTI5dEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMC0zMVQwMTozMTozMS4yNTBaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--26b1ea4e81a1d07b4608edea68195ace58d3343c&_fd=0&_sc=1&key=65bce868cc816abeaaff9c5fd573e17e1c789535a4f35f330042f827951cb51e&preview_theme_id=147609813044'; // Placeholder
 export const SHOPIFY_MERCH_URL_PREVIEW = 'https://valleyfightseries.myshopify.com/password?_ab=0&_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVIyWVd4c1pYbG1hV2RvZEhObGNtbGxjeTV0ZVhOb2IzQnBabmt1WTI5dEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMC0zMVQwNDoxMjozMC42NjRaIiwicHVyIjoicGVybWFuZW50X3Bhc3N3b3JkX2J5cGFzcyJ9fQ%3D%3D--2115a9621b4c97b0e901ff1678b551c8c0db5225&_fd=0&_sc=1&key=ba12fa01fcae49390a8c648f5f2525e7cb3b656e01d49d6e7a6c2aab062858b6&preview_theme_id=147609813044';
